@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { csv } from 'd3-request'
 import { timeParse } from 'd3-time-format'
+import Histogram from '../Histogram'
+
 
 class H1BGraph extends Component {
   constructor() {
@@ -19,36 +21,36 @@ class H1BGraph extends Component {
     title = title.replace(/[^a-z ]/gi, '');
 
     if (title.match(/consultant|specialist|expert|prof|advis|consult/)) {
-        title = "consultant";
+        title = 'consultant';
     }else if (title.match(/analyst|strateg|scien/)) {
-        title = "analyst";
+        title = 'analyst';
     }else if (title.match(/manager|associate|train|manag|direct|supervis|mgr|chief/)) {
-        title = "manager";
+        title = 'manager';
     }else if (title.match(/architect/)) {
-        title = "architect";
+        title = 'architect';
     }else if (title.match(/lead|coord/)) {
-        title = "lead";
+        title = 'lead';
     }else if (title.match(/eng|enig|ening|eign/)) {
-        title = "engineer";
+        title = 'engineer';
     }else if (title.match(/program/)) {
-        title = "programmer";
+        title = 'programmer';
     }else if (title.match(/design/)) {
-        title = "designer";
+        title = 'designer';
     }else if (title.match(/develop|dvelop|develp|devlp|devel|deelop|devlop|devleo|deveo/)) {
-        title = "developer";
+        title = 'developer';
     }else if (title.match(/tester|qa|quality|assurance|test/)) {
-        title = "tester";
+        title = 'tester';
     }else if (title.match(/admin|support|packag|integrat/)) {
-        title = "administrator";
+        title = 'administrator';
     }else{
-        title = "other";
+        title = 'other';
     }
 
     return title;
   }
 
   loadRawData() {
-    let parseDate = timeParse("%m/%d/%Y")
+    let parseDate = timeParse('%m/%d/%Y')
     csv(this.props.url)
       .row((d) => {
         if (!d['base salary']) {
@@ -81,9 +83,21 @@ class H1BGraph extends Component {
         <h2> Loading data about lots and lots of H1B visas</h2>
       )
     }
+
+    let params = {
+      bins: 20,
+      width: 500,
+      height: 500,
+      axisMargin: 83,
+      topMargin: 10,
+      bottomMargin: 5,
+      value: (d) => d.base_salary
+    },
+      fullWidth = 700
     return (
       <div>
-        <svg>
+        <svg width={fullWidth} height={params.height}>
+          <Histogram {...params} data={this.state.rawData}/>
         </svg>
       </div>
     );
