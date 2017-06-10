@@ -4,6 +4,7 @@ import { min } from 'd3-array'
 import { max } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
 import HistogramBar from './HistogramBar'
+import Axis from './Axis'
 
 class Histogram extends Component {
   constructor(props){
@@ -55,6 +56,7 @@ class Histogram extends Component {
         <g className="bars">
           {bars.map(this.makeBar.bind(this))}
         </g>
+        <Axis {...this.props} data={bars} />
       </g>
     )
   }
